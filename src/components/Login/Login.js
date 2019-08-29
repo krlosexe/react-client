@@ -7,10 +7,12 @@ import CategoriasSelect from './../../components/CategoriasSelect';
 import axios from 'axios';
 
 import { base_url, api } from '../../base_url'
+import { Redirect } from 'react-router-dom';
+
 
 const LoginSchema = Yup.object().shape({
 
-  nombre: Yup.string()
+  username: Yup.string()
     .min(2, 'Too Short!')
     .max(50, 'Too Long!')
     .required('Required'),
@@ -22,22 +24,24 @@ const LoginSchema = Yup.object().shape({
 
 
 
-
-
 export default class Login extends React.Component {
 	
-	constructor() {
-		super();
+	constructor(props) {
+		super(props);
 	}
 
-
-	producto = {
-     	nombre    : '',
+	login = {
+     	username  : '',
      	password  : ''
-
 	}
 
-	save(value){
+
+	state = {
+	    redirect: false
+	}
+
+
+	auth(value){
 		axios({
 			method: 'POST',
 			url: base_url+api+"/Auth/User",
@@ -46,28 +50,43 @@ export default class Login extends React.Component {
 			
 		}).then(respuesta => {
 
-			console.log(respuesta);
+
 			let datos = respuesta.data;
 
 			if (datos.success) {
-				this.producto = {
-			     	nombre    : '',
+				window.localStorage.setItem("token", respuesta.data.message.token);
+				window.localStorage.setItem("id_user", respuesta.data.message.id_user);
+				alert("Se autenticado exitosamente");
+
+				this.setState({ redirect: true })
+
+			}else{
+				alert(respuesta.data.error);
+			}
+
+			this.login = {
+			     	username  : '',
 			     	password  : ''
 				}
-				alert("REGISTRO EXITOSO");
-			}
 		});
 	}
 
+
 	render() {
+
+		// console.log(window.localStorage.getItem("token"));
+		 const { redirect } = this.state;
+		 if (redirect) {
+	       return <Redirect to='/dashboard'/>;
+	     }
 
 		return (
 			<div>
 			    <Formik
-			      initialValues={this.producto}
+			      initialValues={this.login}
 			      validationSchema={LoginSchema}
 			      onSubmit={value => {
-			      	this.save(value);
+			      	this.auth(value);
 			      }}
 			    >
 			      {({ errors, touched }) => (
@@ -80,9 +99,9 @@ export default class Login extends React.Component {
 			          	<div className="row">
 			          		<div className="col-md-6 form-group">
 				          	  <label>Nombre</label>
-					          <Field name="nombre" className="form-control"/>
-					          {errors.nombre && touched.nombre ? (
-					            <div className="text-danger">{errors.nombre}</div>
+					          <Field name="username" className="form-control"/>
+					          {errors.username && touched.username ? (
+					            <div className="text-danger">{errors.username}</div>
 					          ) : null}
 				         	</div>
 

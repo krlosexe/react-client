@@ -6,7 +6,7 @@ import {URL} from './../config/config';
 import {Field } from 'formik';
 
 
-export default class CategoriasSelect extends React.Component {
+export default class CursosSelect extends React.Component {
 
 	constructor(props) {
 		super(props);

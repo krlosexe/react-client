@@ -27,6 +27,7 @@ export default class Navbars extends React.Component {
 	    });
 	}
 
+
 	render() {
 		return (
 			<div>
@@ -34,16 +35,21 @@ export default class Navbars extends React.Component {
 		            <NavbarBrand href="/">Mi App Client</NavbarBrand>
 		            <NavbarToggler onClick={this.toggle} />
 		            <Collapse isOpen={this.state.isOpen} navbar>
-		              <Nav className="ml-auto" navbar>
-		                <NavItem>
-		                  <Link className="nav-link" to="/producto">Productos</Link>
-		                </NavItem>
+		              	<Nav className="ml-auto" navbar>
+							<NavItem>
+			              		<Link className="nav-link" to="/estudent">Estudiantes</Link>
+			            	</NavItem>
 
-		                <NavItem>
-		                  <Link className="nav-link" to="/producto/crear">Crear Productos</Link>
-		                </NavItem>
-		               
-		              </Nav>
+			            	<NavItem>
+			              		<Link className="nav-link" to="/cursos">Cursos</Link>
+			            	</NavItem>
+
+
+			            	<NavItem>
+			              		<Link className="nav-link" to="/notas">Cargar Notas</Link>
+			            	</NavItem>
+
+			           </Nav>
 		            </Collapse>
 		        </Navbar>
 			</div>
